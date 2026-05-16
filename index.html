@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="مساعد قانوني ذكي للمخالفات المرورية المغربية - مدونة السير" />
+  <meta name="theme-color" content="#0a0f1e" />
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <title>مدونة السير المغربية — المساعد القانوني</title>
+</head>
+<body>
+
+<!-- خلفية ديناميكية -->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-gradient-orb orb-1" aria-hidden="true"></div>
+<div class="bg-gradient-orb orb-2" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════
+     شريط التنقل العلوي
+════════════════════════════════════════ -->
+<nav class="navbar" role="navigation" aria-label="القائمة الرئيسية">
+  <div class="nav-brand" onclick="navigateTo('home')" role="button" tabindex="0">
+    <div class="nav-logo" aria-hidden="true">🚦</div>
+    <div>
+      <div class="nav-title">مدونة السير</div>
+      <div class="nav-subtitle">المساعد القانوني المغربي</div>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-icon" id="themeToggle" title="تبديل الثيم" aria-label="تبديل الوضع الليلي">☀️</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     إشعارات Toast
+════════════════════════════════════════ -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- ═══════════════════════════════════════
+     المحتوى الرئيسي
+════════════════════════════════════════ -->
+<main class="pb-nav">
+
+  <!-- ────────────────────────────────────
+       الصفحة الرئيسية
+  ──────────────────────────────────── -->
+  <div id="page-home" class="page active">
+    <div class="container">
+      
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-badge">
+          <span>⚖️</span> مساعدك القانوني الذكي
+        </div>
+        <h1>مدونة السير المغربية<br/>في متناول يدك</h1>
+        <p>ابحث عن أي مخالفة، احسب النقاط المخصومة، وحلل الحوادث بسهولة تامة</p>
+        
+        <!-- شريط البحث الرئيسي -->
+        <div class="search-wrapper">
+          <input 
+            type="search" 
+            id="hero-search"
+            class="search-input" 
+            placeholder='ابحث عن مخالفة... مثال: "سرعة" أو "feu rouge"'
+            autocomplete="off"
+            autocorrect="off"
+            inputmode="search"
+          />
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <button class="search-clear" id="hero-clear" aria-label="مسح البحث" onclick="document.getElementById('hero-search').value=''; this.classList.remove('visible')">✕</button>
+        </div>
+        
+        <!-- اقتراحات البحث -->
+        <div class="search-hints" role="list" aria-label="اقتراحات بحث">
+          <button class="hint-tag" role="listitem" onclick="doSearch('سرعة')">⚡ سرعة مفرطة</button>
+          <button class="hint-tag" role="listitem" onclick="doSearch('feu rouge')">🚦 Feu rouge</button>
+          <button class="hint-tag" role="listitem" onclick="doSearch('هاتف')">📱 الهاتف</button>
+          <button class="hint-tag" role="listitem" onclick="doSearch('أسبقية')">🔄 الأسبقية</button>
+        </div>
+      </section>
+
+      <!-- إحصائيات سريعة -->
+      <section class="stats-bar" aria-label="إحصائيات">
+        <div class="stat-card">
+          <span class="stat-value" id="stat-total">—</span>
+          <div class="stat-label">مخالفة مصنفة</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-maxFine">—</span>
+          <div class="stat-label">أعلى غرامة</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-maxPts">—</span>
+          <div class="stat-label">أعلى نقاط</div>
+        </div>
+      </section>
+      
+      <!-- الإجراءات السريعة -->
+      <section aria-label="الخدمات الرئيسية">
+        <div class="section-title">الخدمات الرئيسية</div>
+        <div class="quick-actions">
+          
+          <!-- بحث المخالفات -->
+          <div class="action-card" onclick="navigateTo('search')" role="button" tabindex="0" aria-label="بحث المخالفات">
+            <div class="action-icon" style="background:rgba(59,130,246,0.15)" aria-hidden="true">🔍</div>
+            <div>
+              <div class="action-title">بحث المخالفات</div>
+              <div class="action-desc">ابحث بالعربية أو الفرنسية</div>
+            </div>
+          </div>
+          
+          <!-- تحليل حادثة -->
+          <div class="action-card" onclick="navigateTo('analyzer')" role="button" tabindex="0" aria-label="تحليل حادثة">
+            <div class="action-icon" style="background:rgba(249,115,22,0.15)" aria-hidden="true">🔍</div>
+            <div>
+              <div class="action-title">تحليل حادثة</div>
+              <div class="action-desc">حدد المسؤولية القانونية</div>
+            </div>
+          </div>
+          
+          <!-- حاسبة النقاط -->
+          <div class="action-card" onclick="navigateTo('calculator')" role="button" tabindex="0" aria-label="حاسبة النقاط">
+            <div class="action-icon" style="background:rgba(139,92,246,0.15)" aria-hidden="true">🧮</div>
+            <div>
+              <div class="action-title">حاسبة النقاط</div>
+              <div class="action-desc">احسب النقاط المخصومة</div>
+            </div>
+          </div>
+          
+          <!-- مدونة السير -->
+          <div class="action-card" onclick="navigateTo('law')" role="button" tabindex="0" aria-label="مدونة السير">
+            <div class="action-icon" style="background:rgba(34,197,94,0.15)" aria-hidden="true">📖</div>
+            <div>
+              <div class="action-title">مدونة السير</div>
+              <div class="action-desc">المواد والقوانين كاملة</div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- بطاقة تنبيه -->
+      <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <span style="font-size:1.5rem;flex-shrink:0">ℹ️</span>
+          <div>
+            <div style="font-size:0.85rem;font-weight:700;margin-bottom:4px">نظام النقاط في المغرب</div>
+            <div style="font-size:0.78rem;color:var(--text-secondary);line-height:1.6">
+              تبدأ الرخصة بـ <strong style="color:var(--accent-primary)">30 نقطة</strong>. تُخصم النقاط مع كل مخالفة. 
+              عند الوصول إلى <strong style="color:var(--red)">صفر نقطة</strong> تُسحب الرخصة لمدة 6 أشهر.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────
+       صفحة البحث
+  ──────────────────────────────────── -->
+  <div id="page-search" class="page">
+    <div class="container">
+      <div style="padding-top:1.25rem">
+        
+        <!-- شريط البحث -->
+        <div class="search-wrapper" style="margin-bottom:1rem">
+          <input 
+            type="search" 
+            id="search-input"
+            class="search-input" 
+            placeholder='ابحث بالعربية أو الفرنسية...'
+            autocomplete="off"
+            aria-label="بحث المخالفات"
+          />
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <button class="search-clear" id="search-clear-btn" aria-label="مسح البحث" onclick="document.getElementById('search-input').value=''; this.classList.remove('visible'); renderSearch('')">✕</button>
+        </div>
+        
+        <!-- فئات التصفية -->
+        <div id="category-tabs" class="category-tabs" role="tablist" aria-label="تصفية حسب الفئة">
+          <!-- تُملأ ديناميكياً -->
+        </div>
+        
+        <!-- عداد النتائج -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+          <div class="section-title" style="margin-bottom:0">النتائج</div>
+          <div id="search-count" style="font-size:0.75rem;color:var(--text-muted)"></div>
+        </div>
+        
+        <!-- نتائج البحث -->
+        <div id="search-results" class="infractions-grid" role="list" aria-label="نتائج البحث">
+          <!-- تُملأ ديناميكياً -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────
+       صفحة تحليل الحوادث
+  ──────────────────────────────────── -->
+  <div id="page-analyzer" class="page">
+    <div class="container">
+      <div class="analyzer-container">
+        <div class="analyzer-title">
+          <span aria-hidden="true">🔍</span>
+          تحليل الحوادث
+        </div>
+        <div class="analyzer-subtitle">أجب على الأسئلة لتحديد المخالفة والمسؤولية القانونية</div>
+        
+        <!-- محتوى المحلل (يُملأ ديناميكياً) -->
+        <div id="analyzer-content">
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <div class="empty-title">جاري التحميل...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────
+       صفحة حاسبة النقاط
+  ──────────────────────────────────── -->
+  <div id="page-calculator" class="page">
+    <div class="container">
+      <div class="calculator-container">
+        <div class="calc-title">
+          <span aria-hidden="true">🧮</span>
+          حاسبة النقاط
+        </div>
+        <div class="calc-subtitle">احسب مجموع النقاط المخصومة من رخصتك</div>
+        
+        <!-- بطاقة المجموع -->
+        <div class="calc-total-card" role="status" aria-live="polite">
+          <div class="total-points" id="total-points">0</div>
+          <div class="total-label">نقطة مخصومة من 30</div>
+          <div class="license-status status-safe" id="license-status">✅ رخصتك في حالة ممتازة</div>
+        </div>
+        
+        <!-- قائمة المخالفات المضافة -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+          <div class="section-title" style="margin-bottom:0">المخالفات المضافة</div>
+          <button onclick="clearCalc()" style="background:none;border:1px solid var(--border);color:var(--text-muted);border-radius:6px;padding:3px 10px;font-size:0.72rem;cursor:pointer;font-family:var(--font-main);transition:var(--transition)" 
+                  onmouseover="this.style.color='var(--red)';this.style.borderColor='var(--red)'"
+                  onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">
+            🗑️ مسح الكل
+          </button>
+        </div>
+        
+        <div id="calc-list" class="calc-list"></div>
+        
+        <!-- إضافة مخالفة -->
+        <div class="calc-add-section">
+          <div class="calc-add-title">➕ إضافة مخالفة</div>
+          <div id="infraction-selector" class="infraction-select-grid">
+            <!-- تُملأ ديناميكياً -->
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────
+       صفحة مدونة السير
+  ──────────────────────────────────── -->
+  <div id="page-law" class="page">
+    <div class="container">
+      <div class="law-container">
+        <div class="law-title">
+          <span aria-hidden="true">📖</span>
+          مدونة السير
+        </div>
+        <div class="law-subtitle">أهم المواد القانونية المنظمة للسير والجولان في المغرب</div>
+        
+        <!-- تحذير قانوني -->
+        <div style="background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);border-radius:var(--radius-md);padding:0.85rem 1rem;margin-bottom:1.25rem;font-size:0.78rem;color:var(--text-secondary)">
+          <strong style="color:#eab308">⚠️ تنبيه:</strong> هذه ملخصات استرشادية للمواد. للاطلاع على النصوص الرسمية الكاملة راجع الجريدة الرسمية أو موقع وزارة النقل المغربية.
+        </div>
+        
+        <div id="law-articles">
+          <!-- تُملأ ديناميكياً -->
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════
+     نافذة التفاصيل (Modal)
+════════════════════════════════════════ -->
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="detail-modal">
+    <!-- تُملأ ديناميكياً -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     شريط التنقل السفلي
+════════════════════════════════════════ -->
+<nav class="bottom-nav" role="navigation" aria-label="التنقل الرئيسي">
+  <button class="nav-item active" data-nav="home" aria-label="الرئيسية">
+    <span class="nav-item-icon" aria-hidden="true">🏠</span>
+    <span class="nav-item-label">الرئيسية</span>
+  </button>
+  <button class="nav-item" data-nav="search" aria-label="بحث المخالفات">
+    <span class="nav-item-icon" aria-hidden="true">🔍</span>
+    <span class="nav-item-label">المخالفات</span>
+  </button>
+  <button class="nav-item" data-nav="analyzer" aria-label="تحليل الحوادث">
+    <span class="nav-item-icon" aria-hidden="true">⚖️</span>
+    <span class="nav-item-label">تحليل</span>
+  </button>
+  <button class="nav-item" data-nav="calculator" aria-label="حاسبة النقاط">
+    <span class="nav-item-icon" aria-hidden="true">🧮</span>
+    <span class="nav-item-label">الحاسبة</span>
+  </button>
+  <button class="nav-item" data-nav="law" aria-label="مدونة السير">
+    <span class="nav-item-icon" aria-hidden="true">📖</span>
+    <span class="nav-item-label">القانون</span>
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     سكريبت التطبيق
+════════════════════════════════════════ -->
+<script src="app.js"></script>
+<script>
+  // ── تهيئة بعض الوظائف بعد تحميل DOM ──
+
+  // البحث من الصفحة الرئيسية
+  document.getElementById('hero-search').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && this.value.trim()) {
+      doSearch(this.value.trim());
+    }
+  });
+
+  // إضافة onmouseover للبحث بالنقر على أيقونة البحث
+  document.querySelector('.search-wrapper .search-icon').style.cursor = 'pointer';
+  document.querySelector('.search-wrapper .search-icon').addEventListener('click', function() {
+    const val = document.getElementById('hero-search').value.trim();
+    if (val) doSearch(val);
+    else navigateTo('search');
+  });
+
+  // تهيئة أحداث بطاقات الإجراءات (keyboard navigation)
+  document.querySelectorAll('.action-card').forEach(card => {
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') card.click();
+    });
+  });
+
+  // اعتراض عند تغيير الصفحة لتحميل الفئات في صفحة البحث
+  const origNavigateTo = navigateTo;
+  window.navigateTo = function(page) {
+    origNavigateTo(page);
+    if (page === 'search') {
+      setTimeout(() => {
+        renderCategoryTabs();
+        renderSearch(APP.searchQuery);
+      }, 50);
+    }
+  };
+</script>
+
+</body>
+</html>
